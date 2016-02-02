@@ -6,11 +6,11 @@
  * @copyright Copyright (c) 2016 prooph software GmbH (http://prooph-software.com/)
  * @license   https://github.com/proophsoftware/prooph-package/blob/master/LICENSE.md New BSD License
  */
-
+// default example configuration for prooph components, see http://getprooph.org/
 return [
     'event_store' => [
         'adapter' => [
-            'type' => 'Prooph\EventStore\Adapter\Doctrine\DoctrineEventStoreAdapter',
+            'type' => \Prooph\EventStore\Adapter\Doctrine\DoctrineEventStoreAdapter::class,
             'options' => [
                 'connection_alias' => 'doctrine.connection.default',
             ],

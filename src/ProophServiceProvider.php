@@ -13,6 +13,9 @@ use Doctrine\DBAL\DriverManager;
 use Illuminate\Support\ServiceProvider;
 use Interop\Container\ContainerInterface;
 
+/**
+ * Laravel service provider for prooph components
+ */
 class ProophServiceProvider extends ServiceProvider
 {
     /**
@@ -34,15 +37,16 @@ class ProophServiceProvider extends ServiceProvider
         ;
     }
 
+    /**
+     * @return string
+     */
     private function getConfigPath()
     {
         return dirname(__DIR__) . '/config';
     }
 
     /**
-     * Register any package services.
-     *
-     * @return void
+     * @interitdoc
      */
     public function register()
     {
@@ -58,27 +62,13 @@ class ProophServiceProvider extends ServiceProvider
             $path . '/dependencies.php', 'dependencies'
         );
 
-        foreach (config('dependencies') as $type => $services) {
-            foreach ($services as $service => $factory) {
-                switch ($type) {
-                    case 'invokables':
-                        $this->app->singleton($service, function () use ($factory) {
-                            return new $factory();
-                        });
-                        break;
-                    case 'factories':
-                        $this->app->singleton($factory, function () use ($factory) {
-                            return new $factory();
-                        });
-                        $this->app->singleton($service, function ($app) use ($factory) {
-                            return $app->make($factory)->__invoke($app->make(ContainerInterface::class));
-                        });
-                        break;
-                    default:
-                        // nothing to do
-                        break;
-                }
-            }
+        foreach (config('dependencies') as $service => $factory) {
+            $this->app->singleton($factory, function () use ($factory) {
+                return new $factory();
+            });
+            $this->app->singleton($service, function ($app) use ($service, $factory) {
+                return $app->make($factory)->__invoke($app->make(ContainerInterface::class), $service);
+            });
         }
 
         $this->app->singleton('doctrine.connection.default', function () {
@@ -86,21 +76,23 @@ class ProophServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * @interitdoc
+     */
     public function provides()
     {
         return [
-            \Prooph\EventStore\EventStore::class,
-            \Prooph\EventStore\Snapshot\SnapshotStore::class,
             // service bus
             \Prooph\ServiceBus\CommandBus::class,
             \Prooph\ServiceBus\EventBus::class,
-            \Prooph\EventStore\Adapter\Doctrine\DoctrineEventStoreAdapter::class,
-            \Prooph\EventStore\Snapshot\Adapter\Doctrine\DoctrineSnapshotAdapter::class,
-            // prooph/event-store-bus-bridge set up
+            // event-store-bus-bridge
             \Prooph\EventStoreBusBridge\TransactionManager::class,
             \Prooph\EventStoreBusBridge\EventPublisher::class,
-            'Prooph\\EventStore\\Adapter\\Doctrine\\DoctrineEventStoreAdapter',
-
+            // event store
+            \Prooph\EventStore\EventStore::class,
+            \Prooph\EventStore\Snapshot\SnapshotStore::class,
+            \Prooph\EventStore\Adapter\Doctrine\DoctrineEventStoreAdapter::class,
+            \Prooph\EventStore\Snapshot\Adapter\Doctrine\DoctrineSnapshotAdapter::class,
         ];
     }
 }

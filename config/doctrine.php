@@ -10,7 +10,7 @@
 return [
     'connection' => [
         'default' => [
-            'driverClass' => 'Doctrine\DBAL\Driver\PDOMySql\Driver',
+            'driverClass' => \Doctrine\DBAL\Driver\PDOMySql\Driver::class,
             'host' => env('DB_HOST', 'localhost'),
             'port' => '3306',
             'user' => env('DB_USERNAME', 'forge'),

@@ -5,9 +5,12 @@ This is a Laravel package for *prooph components* to get started out of the box 
 and snapshots. It uses Doctrine DBAL with PDO MySQL driver. There are more adapters available.
 
 It provides all [service definitions and a default configuration](config "Laravel Package Resources"). This is more like 
-a Quick-Start package. If you want to use the prooph components in production, we recommended to configure the 
+a Quick-Start package. If you want to use the prooph components in production, we recommend to configure the 
 *prooph components* for your requirements. See the [documentation](http://getprooph.org/ "prooph components documentation") 
 for more details of the *prooph components*.
+
+For rapid prototyping we recommend to use our 
+[prooph-cli](https://github.com/proophsoftware/prooph-cli "prooph command line interface") tool.
 
 ### Available services
 * `Prooph\ServiceBus\CommandBus`: Dispatches commands
@@ -123,9 +126,10 @@ return [
     'event_store' => [
         // list of aggregate repositories
         'user_collection' => [
-            'repository_class' => 'Prooph\ProophessorDo\Infrastructure\Repository\EventStoreUserCollection',
-            'aggregate_type' => 'Prooph\ProophessorDo\Model\User\User',
-            'aggregate_translator' => 'Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator',
+            'repository_class' => \Prooph\ProophessorDo\Infrastructure\Repository\EventStoreUserCollection::class,
+            'aggregate_type' => \Prooph\ProophessorDo\Model\User\User::class,
+            'aggregate_translator' => \Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator::class,
+            'snapshot_store' => \Prooph\EventStore\Snapshot\SnapshotStore::class,
         ],
     ],
     'service_bus' => [
@@ -133,38 +137,36 @@ return [
             'router' => [
                 'routes' => [
                     // list of commands with corresponding command handler
-                    'Prooph\ProophessorDo\Model\User\Command\RegisterUser' => 'Prooph\ProophessorDo\Model\User\Handler\RegisterUserHandler'
-                ]
-            ]
+                    \Prooph\ProophessorDo\Model\User\Command\RegisterUser::class => \Prooph\ProophessorDo\Model\User\Handler\RegisterUserHandler::class,
+                ],
+            ],
         ],
         'event_bus' => [
             'router' => [
                 'routes' => [
                     // list of events with a list of projectors
-                    'Prooph\ProophessorDo\Model\User\Event\UserWasRegistered' => [
-                        'Prooph\ProophessorDo\Projection\User\UserProjector'
-                    ]
-                ]
-            ]
-        ]
-    ]
+                    \Prooph\ProophessorDo\Model\User\Event\UserWasRegistered::class => [
+                        \Prooph\ProophessorDo\Projection\User\UserProjector::class
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];
 ```
 
 Add the service container factories to `config/dependencies.php`.
 
 ```php
-// add the following config in your config/dependencies.php under the specific config key
+// add the following config in your config/dependencies.php after the other factories
 return [
-    'factories' => [
-        // your factories
-        // Model
-        \Prooph\ProophessorDo\Model\User\Handler\RegisterUserHandler::class => \Prooph\ProophessorDo\Container\Model\User\RegisterUserHandlerFactory::class,
-        \Prooph\ProophessorDo\Model\User\UserCollection::class => \Prooph\ProophessorDo\Container\Infrastructure\Repository\EventStoreUserCollectionFactory::class,
-        // Projections
-        \Prooph\ProophessorDo\Projection\User\UserProjector::class => \Prooph\ProophessorDo\Container\Projection\User\UserProjectorFactory::class,
-        \Prooph\ProophessorDo\Projection\User\UserFinder::class => \Prooph\ProophessorDo\Container\Projection\User\UserFinderFactory::class,
-    ]
+    // your factories
+    // Model
+    \Prooph\ProophessorDo\Model\User\Handler\RegisterUserHandler::class => \Prooph\ProophessorDo\Container\Model\User\RegisterUserHandlerFactory::class,
+    \Prooph\ProophessorDo\Model\User\UserCollection::class => \Prooph\ProophessorDo\Container\Infrastructure\Repository\EventStoreUserCollectionFactory::class,
+    // Projections
+    \Prooph\ProophessorDo\Projection\User\UserProjector::class => \Prooph\ProophessorDo\Container\Projection\User\UserProjectorFactory::class,
+    \Prooph\ProophessorDo\Projection\User\UserFinder::class => \Prooph\ProophessorDo\Container\Projection\User\UserFinderFactory::class,
 ];
 ```
 

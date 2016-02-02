@@ -28,6 +28,8 @@
   ],
   "require": {
     "php": "^5.5 || ^7.0",
+    "container-interop/container-interop": "^1.1",
+    "doctrine/dbal": "^2.0",
     "illuminate/support": "^5.0",
     "monii/container-interop-laravel": "^1.0.1",
     "prooph/event-sourcing": "^4.0",
@@ -36,14 +38,16 @@
     "prooph/event-store-doctrine-adapter" : "^3.0",
     "prooph/service-bus": "^5.0.2",
     "prooph/snapshot-doctrine-adapter": "^1.0",
-    "prooph/snapshotter": "^1.0",
-    "proophsoftware/prooph-cli": "^0.1",
-    "sandrokeil/interop-config": "^0.3.1"
+    "prooph/snapshotter": "^1.0"
   },
   "require-dev": {
     "illuminate/container": "^5.0",
     "phpunit/phpunit": "^4.8 || ^5.0",
     "fabpot/php-cs-fixer": "^1.11"
+  },
+  "suggest": {
+    "illuminate/database": "If you want to use the database migration schema classes for event store and snapshot",
+    "proophsoftware/prooph-cli": "For Rapid Prototyping, if you want to generate your aggregates, commands, handlers and events."
   },
   "autoload": {
     "psr-4": {
