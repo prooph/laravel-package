@@ -1,11 +1,13 @@
 # Laravel package for prooph components
 
 ## Overview
-This is a Laravel package for prooph components to get started out of the box with message bus, CQRS, event sourcing and 
-snapshots. It uses Doctrine DBAL.
+This is a Laravel package for *prooph components* to get started out of the box with message bus, CQRS, event sourcing 
+and snapshots. It uses Doctrine DBAL with PDO MySQL driver. There are more adapters available.
 
-It provides all [service definitions and a default configuration](config "Laravel Package Resources"). 
-See the [documentation](http://getprooph.org/) for more details of the prooph components.
+It provides all [service definitions and a default configuration](config "Laravel Package Resources"). This is more like 
+a Quick-Start package. If you want to use the prooph components in production, we recommended to configure the 
+*prooph components* for your requirements. See the [documentation](http://getprooph.org/ "prooph components documentation") 
+for more details of the *prooph components*.
 
 ### Available services
 * `Prooph\ServiceBus\CommandBus`: Dispatches commands
@@ -17,24 +19,106 @@ See the [documentation](http://getprooph.org/) for more details of the prooph co
 * `Prooph\EventStore\Snapshot\Adapter\Doctrine\DoctrineSnapshotAdapter`: Doctrine snapshot adapter
 
 ## Installation
-
-You can install prooph/prooph-package via composer by adding `"proophsoftware/prooph-package": "^0.1"` as requirement to 
-your composer.json. Setup your database [migrations](https://github.com/prooph/event-store-doctrine-adapter#database-set-up)
-for the Event Store.
+You can install `proophsoftware/prooph-package` via Composer by adding `"proophsoftware/prooph-package": "^0.1"` 
+as requirement to your composer.json. 
 
 ### Service Provider
-In your application configuration add `Monii\Interop\Container\Laravel\ServiceProvider` for container-interop support and
-`Prooph\Package\ProophServiceProvider` to your providers array. Then you have access to the services above.
+In your application configuration add `Monii\Interop\Container\Laravel\ServiceProvider` for 
+[container-interop](https://github.com/container-interop/container-interop "Visit Container Interoperability Project") 
+support and `Prooph\Package\ProophServiceProvider` to your 
+[providers](https://laravel.com/docs/master/providers#registering-providers "Visit Laravel Documentation") array. 
+Then you have access to the services above.
 
-## Example
-You have only to define your models (Entities, Repositories) and commands/routes. You find all these things in the 
-[prooph components documentation](http://getprooph.org/ "prooph components documentation"). Here is an example config
-from the [proophessor-do example app](https://github.com/prooph/proophessor-do "prooph components in action").
+This package has configuration files which can be configured to your needs.
 
-> Run `artisan vendor:publish` to add your configuration for the prooph components
+Deploy the prooph config files to add your configuration for the prooph components.
+
+```bash 
+$ php artisan vendor:publish
+```
+
+### Database
+Setup your [database migrations](https://github.com/prooph/event-store-doctrine-adapter#database-set-up)
+for the Event Store and Snapshot with:
+
+```bash
+$ php artisan make:migration create_event_stream_table
+```
+
+Update the class `CreateEventStreamTable`:
 
 ```php
-// in your config/prooph.php
+class CreateEventStreamTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        \Prooph\Package\Migration\Schema\EventStoreSchema::createSingleStream('event_stream', true);
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        \Prooph\Package\Migration\Schema\EventStoreSchema::dropStream('event_stream');
+    }
+}
+```
+
+And now for the snapshot table.
+
+```bash
+$ php artisan make:migration create_snapshot_table
+```
+
+Update the class `CreateSnapshotTable`:
+
+```php
+class CreateSnapshotTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        \Prooph\Package\Migration\Schema\SnapshotSchema::create('snapshot');
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        \Prooph\Package\Migration\Schema\SnapshotSchema::drop('snapshot');
+    }
+}
+```
+
+Now it's time to execute the migrations:
+
+```bash
+$ php artisan migrate
+```
+
+## Example
+You have only to define your models (Entities, Repositories) and commands / routes. Here is an example config
+from the [proophessor-do example app](https://github.com/prooph/proophessor-do "prooph components in action").
+
+Define the aggregate repository, command route and event route for `RegisterUser` in `config/prooph.php`.
+ 
+```php
+// add the following config in your config/prooph.php under the specific config key
 return [
     'event_store' => [
         // list of aggregate repositories
@@ -67,12 +151,13 @@ return [
 ];
 ```
 
-Here is an example of the corresponding service XML configuration with container-interop for the proophessor-do example.
+Add the service container factories to `config/dependencies.php`.
 
 ```php
-// in your config/dependencies.php
+// add the following config in your config/dependencies.php under the specific config key
 return [
     'factories' => [
+        // your factories
         // Model
         \Prooph\ProophessorDo\Model\User\Handler\RegisterUserHandler::class => \Prooph\ProophessorDo\Container\Model\User\RegisterUserHandlerFactory::class,
         \Prooph\ProophessorDo\Model\User\UserCollection::class => \Prooph\ProophessorDo\Container\Infrastructure\Repository\EventStoreUserCollectionFactory::class,

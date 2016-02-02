@@ -14,9 +14,13 @@ return [
         \Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator::class => \Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator::class,
     ],
     'factories' => [
+        // prooph/event-store set up
         \Prooph\EventStore\EventStore::class => \Prooph\EventStore\Container\EventStoreFactory::class,
-        \Prooph\EventStore\Snapshot\SnapshotStore::class => \Prooph\EventStore\Container\Snapshot\SnapshotStoreFactory::class,
         'Prooph\\EventStore\\Adapter\\Doctrine\\DoctrineEventStoreAdapter' => 'Prooph\\EventStore\\Adapter\\Doctrine\\Container\\DoctrineEventStoreAdapterFactory',
+        // prooph snapshot setup
+        \Prooph\Snapshotter\SnapshotPlugin::class => \Prooph\Snapshotter\Container\SnapshotPluginFactory::class,
+        \Prooph\Snapshotter\Snapshotter::class => \Prooph\Snapshotter\Container\SnapshotterFactory::class,
+        \Prooph\EventStore\Snapshot\SnapshotStore::class => \Prooph\EventStore\Container\Snapshot\SnapshotStoreFactory::class,
         'Prooph\\EventStore\\Snapshot\\Adapter\\Doctrine\\DoctrineSnapshotAdapter' => 'Prooph\\EventStore\\Snapshot\\Adapter\\Doctrine\\Container\\DoctrineSnapshotAdapterFactory',
         // prooph/service-bus set up
         \Prooph\ServiceBus\CommandBus::class => \Prooph\ServiceBus\Container\CommandBusFactory::class,
@@ -24,5 +28,6 @@ return [
         // prooph/event-store-bus-bridge set up
         \Prooph\EventStoreBusBridge\TransactionManager::class => \Prooph\EventStoreBusBridge\Container\TransactionManagerFactory::class,
         \Prooph\EventStoreBusBridge\EventPublisher::class     => \Prooph\EventStoreBusBridge\Container\EventPublisherFactory::class,
+        // your factories
     ]
 ];

@@ -18,6 +18,7 @@ return [
         'plugins' => [
             \Prooph\EventStoreBusBridge\EventPublisher::class,
             \Prooph\EventStoreBusBridge\TransactionManager::class,
+            \Prooph\Snapshotter\SnapshotPlugin::class,
         ],
         // list of aggregate repositories
     ],
@@ -25,9 +26,10 @@ return [
         'command_bus' => [
             'router' => [
                 'routes' => [
+                    \Prooph\Snapshotter\TakeSnapshot::class => \Prooph\Snapshotter\Snapshotter::class,
                     // list of commands with corresponding command handler
-                ]
-            ]
+                ],
+            ],
         ],
         'event_bus' => [
             'plugins' => [
@@ -36,8 +38,25 @@ return [
             'router' => [
                 'routes' => [
                     // list of events with a list of projectors
+                ],
+            ],
+        ],
+    ],
+    'snapshot_store' => [
+        'adapter' => [
+            'type' => \Prooph\EventStore\Snapshot\Adapter\Doctrine\DoctrineSnapshotAdapter::class,
+            'options' => [
+                'connection_alias' => 'doctrine.connection.default',
+                'snapshot_table_map' => [
+                    // list of aggregate root => table (default is snapshot)
                 ]
             ]
         ]
-    ]
+    ],
+    'snapshotter' => [
+        'version_step' => 5, // every 5 events a snapshot
+        'aggregate_repositories' => [
+            // list of aggregate root => aggregate repositories
+        ]
+    ],
 ];
