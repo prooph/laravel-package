@@ -31,7 +31,7 @@ final class SnapshotSchema
             // UUID4 of linked aggregate
             $snapshot->char('aggregate_id', 36);
             // Class of the linked aggregate
-            $snapshot->string('aggregate_type', 100);
+            $snapshot->string('aggregate_type', 150);
             // Version of the aggregate after event was recorded
             $snapshot->integer('last_version', false, true);
             // DateTime ISO8601 + microseconds UTC stored as a string e.g. 2016-02-02T11:45:39.000000

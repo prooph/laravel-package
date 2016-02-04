@@ -41,7 +41,7 @@ final class EventStoreSchema
             // UUID4 of linked aggregate
             $eventStream->char('aggregate_id', 36);
             // Class of the linked aggregate
-            $eventStream->string('aggregate_type', 100);
+            $eventStream->string('aggregate_type', 150);
 
             if ($withCausationColumns) {
                 // UUID4 of the command which caused the event
@@ -77,7 +77,7 @@ final class EventStoreSchema
             // UUID4 of linked aggregate
             $eventStream->char('aggregate_id', 36);
             // Class of the linked aggregate
-            $eventStream->string('aggregate_type', 100);
+            $eventStream->string('aggregate_type', 150);
 
             if ($withCausationColumns) {
                 // UUID4 of the command which caused the event
