@@ -22,7 +22,7 @@ For rapid prototyping we recommend to use our
 * `Prooph\EventStore\Snapshot\Adapter\Doctrine\DoctrineSnapshotAdapter`: Doctrine snapshot adapter
 
 ## Installation
-You can install `proophsoftware/prooph-package` via Composer by adding `"proophsoftware/prooph-package": "^0.1"` 
+You can install `prooph/prooph-package` via Composer by adding `"prooph/prooph-package": "^0.1"` 
 as requirement to your composer.json. 
 
 ### Service Provider
@@ -201,7 +201,7 @@ Here is an example how to get a list of all users from the example above:
 ## Support
 
 - Ask questions on [prooph-users](https://groups.google.com/forum/?hl=de#!forum/prooph) mailing list.
-- File issues at [https://github.com/proophsoftware/prooph-package/issues](https://github.com/proophsoftware/prooph-package/issues).
+- File issues at [https://github.com/proophsoftware/prooph-package/issues](https://github.com/prooph/prooph-package/issues).
 - Say hello in the [prooph gitter](https://gitter.im/prooph/improoph) chat.
 
 ## Contribute
