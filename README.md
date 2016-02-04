@@ -201,7 +201,7 @@ Here is an example how to get a list of all users from the example above:
 ## Support
 
 - Ask questions on [prooph-users](https://groups.google.com/forum/?hl=de#!forum/prooph) mailing list.
-- File issues at [https://github.com/prooph/prooph-package/issues](https://github.com/prooph/prooph-package/issues).
+- File issues at [https://github.com/prooph/laravel-package/issues](https://github.com/prooph/laravel-package/issues).
 - Say hello in the [prooph gitter](https://gitter.im/prooph/improoph) chat.
 
 ## Contribute
