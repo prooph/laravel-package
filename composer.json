@@ -42,7 +42,8 @@
     "prooph/event-store-doctrine-adapter" : "^3.0",
     "prooph/service-bus": "^5.0.2",
     "prooph/snapshot-doctrine-adapter": "^1.0",
-    "prooph/snapshotter": "^1.0"
+    "prooph/snapshotter": "^1.0",
+    "sandrokeil/interop-config": "^0.3.1"
   },
   "require-dev": {
     "illuminate/container": "^5.0",
