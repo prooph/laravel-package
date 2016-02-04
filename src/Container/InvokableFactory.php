@@ -2,9 +2,9 @@
 /**
  * prooph (http://getprooph.org/)
  *
- * @see       https://github.com/proophsoftware/prooph-package for the canonical source repository
+ * @see       https://github.com/prooph/prooph-package for the canonical source repository
  * @copyright Copyright (c) 2016 prooph software GmbH (http://prooph-software.com/)
- * @license   https://github.com/proophsoftware/prooph-package/blob/master/LICENSE.md New BSD License
+ * @license   https://github.com/prooph/prooph-package/blob/master/LICENSE.md New BSD License
  */
 
 namespace Prooph\Package\Container;
