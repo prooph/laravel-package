@@ -1,5 +1,5 @@
 {
-  "name": "prooph/prooph-package",
+  "name": "prooph/laravel-package",
   "description": "Laravel package for prooph components to get started out of the box with message bus, CQRS, event sourcing and snapshots",
   "type": "library",
   "license": "BSD-3-Clause",
