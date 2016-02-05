@@ -1,8 +1,8 @@
-# prooph package CHANGELOG
+# prooph Laravel package CHANGELOG
 
 All notable changes to this project will be documented in this file, in reverse chronological order by release.
 
-## 0.1.0 (2016-02-04)
+## 0.1.0 (2016-02-05)
 
 ### Added
 
