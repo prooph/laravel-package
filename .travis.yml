@@ -35,5 +35,5 @@ script:
   - if [[ $EXECUTE_TEST_COVERALLS != 'true' ]]; then composer test ; fi
   - if [[ $EXECUTE_CS_CHECK == 'true' ]]; then composer cs ; fi
 
-after_script:
+after_success:
   - if [[ $EXECUTE_TEST_COVERALLS == 'true' ]]; then composer coveralls ; fi
