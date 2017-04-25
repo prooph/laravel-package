@@ -35,7 +35,7 @@
     "container-interop/container-interop": "^1.1",
     "doctrine/dbal": "^2.0",
     "illuminate/support": "^5.0",
-    "monii/container-interop-laravel": "^1.0.1",
+    "illuminate/contracts": "^5.0",
     "prooph/event-sourcing": "^4.0",
     "prooph/event-store": "^6.0",
     "prooph/event-store-bus-bridge": "^2.0",

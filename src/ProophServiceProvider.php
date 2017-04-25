@@ -11,7 +11,7 @@ namespace Prooph\Package;
 
 use Doctrine\DBAL\DriverManager;
 use Illuminate\Support\ServiceProvider;
-use Interop\Container\ContainerInterface;
+use Prooph\Package\Container\LaravelContainer;
 
 /**
  * Laravel service provider for prooph components
@@ -62,12 +62,16 @@ class ProophServiceProvider extends ServiceProvider
             $path . '/dependencies.php', 'dependencies'
         );
 
+        $this->app->singleton(LaravelContainer::class, function ($app) {
+            return new LaravelContainer($app);
+        });
+
         foreach (config('dependencies') as $service => $factory) {
             $this->app->singleton($factory, function () use ($factory) {
                 return new $factory();
             });
             $this->app->singleton($service, function ($app) use ($service, $factory) {
-                return $app->make($factory)->__invoke($app->make(ContainerInterface::class), $service);
+                return $app->make($factory)->__invoke($app->make(LaravelContainer::class), $service);
             });
         }
 
