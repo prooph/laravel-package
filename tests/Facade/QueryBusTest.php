@@ -51,7 +51,8 @@ final class QueryBusTest extends \PHPUnit_Framework_TestCase
 
         $promise = new Promise(function ($resolve) {
             $resolve('abc');
-        }, function () {});
+        }, function () {
+        });
         $stub->dispatch('DidTestPass')->willReturn($promise);
 
         $result = \Prooph\Package\Facades\QueryBus::resultFrom('DidTestPass');
@@ -75,7 +76,8 @@ final class QueryBusTest extends \PHPUnit_Framework_TestCase
 
         $promise = new Promise(function ($_, $reject) {
             $reject('abc');
-        }, function () {});
+        }, function () {
+        });
         $stub->dispatch('DidTestPass')->willReturn($promise);
 
         \Prooph\Package\Facades\QueryBus::resultFrom('DidTestPass');

@@ -20,19 +20,19 @@ namespace {
      */
     final class CommandBus
     {
-        public static function dispatch($command) : void
+        public static function dispatch($command): void
         {
         }
 
-        public static function utilize(ActionEventListenerAggregate $plugin) : void
+        public static function utilize(ActionEventListenerAggregate $plugin): void
         {
         }
 
-        public static function setActionEventEmitter(ActionEventEmitter $actionEventDispatcher) : void
+        public static function setActionEventEmitter(ActionEventEmitter $actionEventDispatcher): void
         {
         }
 
-        public static function getActionEventEmitter() : ActionEventEmitter
+        public static function getActionEventEmitter(): ActionEventEmitter
         {
         }
     }
@@ -42,19 +42,19 @@ namespace {
      */
     final class EventBus
     {
-        public static function dispatch($event) : void
+        public static function dispatch($event): void
         {
         }
 
-        public static function utilize(ActionEventListenerAggregate $plugin) : void
+        public static function utilize(ActionEventListenerAggregate $plugin): void
         {
         }
 
-        public static function setActionEventEmitter(ActionEventEmitter $actionEventDispatcher) : void
+        public static function setActionEventEmitter(ActionEventEmitter $actionEventDispatcher): void
         {
         }
 
-        public static function getActionEventEmitter() : ActionEventEmitter
+        public static function getActionEventEmitter(): ActionEventEmitter
         {
         }
     }
@@ -64,19 +64,26 @@ namespace {
      */
     final class QueryBus
     {
-        public static function dispatch($query) : Promise
+        public static function dispatch($query): Promise
         {
         }
 
-        public static function utilize(ActionEventListenerAggregate $plugin) : void
+        /**
+         * @return mixed
+         */
+        public static function resultFrom($aQuery)
         {
         }
 
-        public static function setActionEventEmitter(ActionEventEmitter $actionEventDispatcher) : void
+        public static function utilize(ActionEventListenerAggregate $plugin): void
         {
         }
 
-        public static function getActionEventEmitter() : ActionEventEmitter
+        public static function setActionEventEmitter(ActionEventEmitter $actionEventDispatcher): void
+        {
+        }
+
+        public static function getActionEventEmitter(): ActionEventEmitter
         {
         }
     }

@@ -20,12 +20,12 @@ namespace {
     {
         private $tweet;
 
-        public static function funnyTweet(string $tweet) : PostTwitterStatus
+        public static function funnyTweet(string $tweet): PostTwitterStatus
         {
             return new self('LOL - ' . $tweet);
         }
 
-        public static function shockingTweet(string $tweet) : PostTwitterStatus
+        public static function shockingTweet(string $tweet): PostTwitterStatus
         {
             return new self('OMG - ' . $tweet);
         }
@@ -36,21 +36,21 @@ namespace {
             $this->tweet = $tweet;
         }
 
-        public function payload() : array
+        public function payload(): array
         {
             return ['tweet' => $this->tweet];
         }
 
-        protected function setPayload(array $payload) : void
+        protected function setPayload(array $payload): void
         {
             $this->tweet = $payload['tweet'];
         }
     }
 
     CommandBus::utilize(new CommandRouter([
-        'PostTwitterStatus' => function (PostTwitterStatus $command) : void {
+        'PostTwitterStatus' => function (PostTwitterStatus $command): void {
             // You know the drill... curl_exec....
-        }
+        },
     ]));
 
     CommandBus::dispatch(PostTwitterStatus::shockingTweet('prooph is awesome.'));

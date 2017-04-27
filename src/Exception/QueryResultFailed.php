@@ -26,7 +26,7 @@ final class QueryResultFailed extends \RuntimeException
      * @param array $response
      * @return QueryResultFailed
      */
-    public static function fromQuery($failedQuery, array $response) : QueryResultFailed
+    public static function fromQuery($failedQuery, array $response): QueryResultFailed
     {
         $previousException = null;
 
@@ -46,7 +46,7 @@ final class QueryResultFailed extends \RuntimeException
         return $error;
     }
 
-    private static function getQueryName($query) : string
+    private static function getQueryName($query): string
     {
         if (is_object($query)) {
             return get_class($query);
@@ -64,7 +64,7 @@ final class QueryResultFailed extends \RuntimeException
         return $this->failedQuery;
     }
 
-    public function getResponse() : array
+    public function getResponse(): array
     {
         return $this->response;
     }

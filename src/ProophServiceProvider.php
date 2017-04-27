@@ -35,8 +35,7 @@ class ProophServiceProvider extends ServiceProvider
                 $path . '/doctrine.php' => config_path('doctrine.php'),
                 $path . '/dependencies.php' => config_path('dependencies.php'),
             ],
-            'config')
-        ;
+            'config');
     }
 
     /**

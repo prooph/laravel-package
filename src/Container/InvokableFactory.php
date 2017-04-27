@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * prooph (http://getprooph.org/)
  *
@@ -18,6 +20,6 @@ final class InvokableFactory
 {
     public function __invoke(ContainerInterface $container, $requestedName)
     {
-        return new $requestedName;
+        return new $requestedName();
     }
 }
