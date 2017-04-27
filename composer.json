@@ -46,10 +46,11 @@
     "sandrokeil/interop-config": "^1.0"
   },
   "require-dev": {
-    "illuminate/container": "^5.0",
+    "laravel/framework": "^5.0",
     "phpunit/phpunit": "^4.8 || ^5.0",
     "satooshi/php-coveralls": "^1.0",
-    "fabpot/php-cs-fixer": "^1.11"
+    "fabpot/php-cs-fixer": "^1.11",
+    "react/promise": "^2.5"
   },
   "suggest": {
     "illuminate/database": "If you want to use the database migration schema classes for event store and snapshot",
