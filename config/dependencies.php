@@ -15,13 +15,7 @@ use \Prooph\Package\Container\InvokableFactory;
 return [
     // prooph/event-store set up
     \Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator::class => InvokableFactory::class,
-    \Prooph\EventStore\EventStore::class => \Prooph\EventStore\Container\EventStoreFactory::class,
-    \Prooph\EventStore\Adapter\Doctrine\DoctrineEventStoreAdapter::class => \Prooph\EventStore\Adapter\Doctrine\Container\DoctrineEventStoreAdapterFactory::class,
-    // prooph snapshot setup
-    \Prooph\Snapshotter\SnapshotPlugin::class => \Prooph\Snapshotter\Container\SnapshotPluginFactory::class,
-    \Prooph\Snapshotter\Snapshotter::class => \Prooph\Snapshotter\Container\SnapshotterFactory::class,
-    \Prooph\EventStore\Snapshot\SnapshotStore::class => \Prooph\EventStore\Container\Snapshot\SnapshotStoreFactory::class,
-    \Prooph\EventStore\Snapshot\Adapter\Doctrine\DoctrineSnapshotAdapter::class => \Prooph\EventStore\Snapshot\Adapter\Doctrine\Container\DoctrineSnapshotAdapterFactory::class,
+    \Prooph\EventStore\EventStore::class => \Prooph\EventStore\Pdo\Container\MySqlEventStoreFactory::class,
     // prooph/service-bus set up
     \Prooph\ServiceBus\CommandBus::class => \Prooph\ServiceBus\Container\CommandBusFactory::class,
     \Prooph\ServiceBus\EventBus::class => \Prooph\ServiceBus\Container\EventBusFactory::class,
