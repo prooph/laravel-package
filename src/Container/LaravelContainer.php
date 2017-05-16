@@ -12,7 +12,7 @@ declare(strict_types=1);
 namespace Prooph\Package\Container;
 
 use Illuminate\Contracts\Container\Container;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionException;
 
