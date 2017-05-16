@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * prooph (http://getprooph.org/)
  *
@@ -23,6 +25,7 @@ return [
     // prooph/service-bus set up
     \Prooph\ServiceBus\CommandBus::class => \Prooph\ServiceBus\Container\CommandBusFactory::class,
     \Prooph\ServiceBus\EventBus::class => \Prooph\ServiceBus\Container\EventBusFactory::class,
+    \Prooph\ServiceBus\QueryBus::class => \Prooph\ServiceBus\Container\QueryBusFactory::class,
     \Prooph\ServiceBus\Plugin\InvokeStrategy\OnEventStrategy::class => InvokableFactory::class,
     // prooph/event-store-bus-bridge set up
     \Prooph\EventStoreBusBridge\TransactionManager::class => \Prooph\EventStoreBusBridge\Container\TransactionManagerFactory::class,

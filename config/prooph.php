@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * prooph (http://getprooph.org/)
  *
@@ -33,7 +35,7 @@ return [
         ],
         'event_bus' => [
             'plugins' => [
-                \Prooph\ServiceBus\Plugin\InvokeStrategy\OnEventStrategy::class
+                \Prooph\ServiceBus\Plugin\InvokeStrategy\OnEventStrategy::class,
             ],
             'router' => [
                 'routes' => [
@@ -49,14 +51,14 @@ return [
                 'connection_alias' => 'doctrine.connection.default',
                 'snapshot_table_map' => [
                     // list of aggregate root => table (default is snapshot)
-                ]
-            ]
-        ]
+                ],
+            ],
+        ],
     ],
     'snapshotter' => [
         'version_step' => 5, // every 5 events a snapshot
         'aggregate_repositories' => [
             // list of aggregate root => aggregate repositories
-        ]
+        ],
     ],
 ];

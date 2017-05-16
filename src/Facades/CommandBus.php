@@ -1,6 +1,4 @@
 <?php
-
-declare(strict_types=1);
 /**
  * prooph (http://getprooph.org/)
  *
@@ -9,17 +7,19 @@ declare(strict_types=1);
  * @license   https://github.com/prooph/laravel-package/blob/master/LICENSE.md New BSD License
  */
 
-namespace Prooph\Package\Container;
+declare(strict_types=1);
 
-use Interop\Container\ContainerInterface;
+namespace Prooph\Package\Facades;
 
-/**
- * Factory for instantiating classes with no dependencies
- */
-final class InvokableFactory
+use Illuminate\Support\Facades\Facade;
+
+final class CommandBus extends Facade
 {
-    public function __invoke(ContainerInterface $container, $requestedName)
+    /**
+     * Get the registered name of the component.
+     */
+    protected static function getFacadeAccessor()
     {
-        return new $requestedName();
+        return \Prooph\ServiceBus\CommandBus::class;
     }
 }

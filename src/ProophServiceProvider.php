@@ -7,6 +7,8 @@
  * @license   https://github.com/prooph/laravel-package/blob/master/LICENSE.md New BSD License
  */
 
+declare(strict_types=1);
+
 namespace Prooph\Package;
 
 use Doctrine\DBAL\DriverManager;
@@ -33,8 +35,7 @@ class ProophServiceProvider extends ServiceProvider
                 $path . '/doctrine.php' => config_path('doctrine.php'),
                 $path . '/dependencies.php' => config_path('dependencies.php'),
             ],
-            'config')
-        ;
+            'config');
     }
 
     /**
@@ -89,6 +90,7 @@ class ProophServiceProvider extends ServiceProvider
             // service bus
             \Prooph\ServiceBus\CommandBus::class,
             \Prooph\ServiceBus\EventBus::class,
+            \Prooph\ServiceBus\QueryBus::class,
             // event-store-bus-bridge
             \Prooph\EventStoreBusBridge\TransactionManager::class,
             \Prooph\EventStoreBusBridge\EventPublisher::class,

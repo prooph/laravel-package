@@ -1,4 +1,6 @@
 <?php
+
+declare(strict_types=1);
 /**
  * prooph (http://getprooph.org/)
  *
@@ -18,7 +20,7 @@ return [
             'dbname' => env('DB_DATABASE', 'forge'),
             'charset' => 'utf8',
             'driverOptions' => [
-                1002 => "SET NAMES 'UTF8'"
+                1002 => "SET NAMES 'UTF8'",
             ],
         ],
     ],
