@@ -31,7 +31,7 @@
     "integration"
   ],
   "require": {
-    "php": "^5.5 || ^7.0",
+    "php": "^7.1",
     "container-interop/container-interop": "^1.1",
     "illuminate/support": "^5.0",
     "illuminate/contracts": "^5.0",
@@ -55,7 +55,7 @@
     "proophsoftware/prooph-cli": "For Rapid Prototyping, if you want to generate your aggregates, commands, handlers and events."
   },
   "conflict": {
-    "sandrokeil/interop-config": "<1.0"
+    "sandrokeil/interop-config": "<2.0.1"
   },
   "autoload": {
     "psr-4": {
