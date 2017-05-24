@@ -5,14 +5,14 @@ declare(strict_types=1);
  * prooph (http://getprooph.org/)
  *
  * @see       https://github.com/prooph/laravel-package for the canonical source repository
- * @copyright Copyright (c) 2016 prooph software GmbH (http://prooph-software.com/)
+ * @copyright Copyright (c) 2016-2017 prooph software GmbH (http://prooph-software.com/)
  * @license   https://github.com/prooph/laravel-package/blob/master/LICENSE.md New BSD License
  */
 
 namespace Prooph\Package\Container;
 
 use Illuminate\Contracts\Container\Container;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 use ReflectionException;
 
@@ -60,22 +60,22 @@ final class LaravelContainer implements ContainerInterface
         return $has;
     }
 
-    private function hasIsCached($id)
+    private function hasIsCached(string $id): bool
     {
         return array_key_exists($id, $this->cacheForHas);
     }
 
-    private function hasFromCache($id)
+    private function hasFromCache(string $id)
     {
         return $this->cacheForHas[$id];
     }
 
-    private function cacheHas($id, $has)
+    private function cacheHas(string $id, bool $has): bool
     {
         $this->cacheForHas[$id] = $has;
     }
 
-    private function isInstantiable($id)
+    private function isInstantiable(string $id): bool
     {
         if (class_exists($id)) {
             return true;

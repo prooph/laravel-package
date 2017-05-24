@@ -12,15 +12,14 @@ declare(strict_types=1);
 return [
     'event_store' => [
         'adapter' => [
-            'type' => \Prooph\EventStore\Adapter\Doctrine\DoctrineEventStoreAdapter::class,
+            'type' => \Prooph\EventStore\Pdo\MySqlEventStore::class,
             'options' => [
-                'connection_alias' => 'doctrine.connection.default',
+                'connection_alias' => 'laravel.connections.pdo',
             ],
         ],
         'plugins' => [
             \Prooph\EventStoreBusBridge\EventPublisher::class,
             \Prooph\EventStoreBusBridge\TransactionManager::class,
-            \Prooph\Snapshotter\SnapshotPlugin::class,
         ],
         // list of aggregate repositories
     ],
@@ -28,7 +27,6 @@ return [
         'command_bus' => [
             'router' => [
                 'routes' => [
-                    \Prooph\Snapshotter\TakeSnapshot::class => \Prooph\Snapshotter\Snapshotter::class,
                     // list of commands with corresponding command handler
                 ],
             ],
@@ -46,9 +44,9 @@ return [
     ],
     'snapshot_store' => [
         'adapter' => [
-            'type' => \Prooph\EventStore\Snapshot\Adapter\Doctrine\DoctrineSnapshotAdapter::class,
+            'type' => \Prooph\SnapshotStore\Pdo\PdoSnapshotStore::class,
             'options' => [
-                'connection_alias' => 'doctrine.connection.default',
+                'connection_alias' => 'laravel.connections.pdo',
                 'snapshot_table_map' => [
                     // list of aggregate root => table (default is snapshot)
                 ],

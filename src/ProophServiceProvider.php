@@ -11,14 +11,13 @@ declare(strict_types=1);
 
 namespace Prooph\Package;
 
-use Doctrine\DBAL\DriverManager;
 use Illuminate\Support\ServiceProvider;
 use Prooph\Package\Container\LaravelContainer;
 
 /**
  * Laravel service provider for prooph components
  */
-class ProophServiceProvider extends ServiceProvider
+final class ProophServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
@@ -32,7 +31,6 @@ class ProophServiceProvider extends ServiceProvider
         $this->publishes(
             [
                 $path . '/prooph.php' => config_path('prooph.php'),
-                $path . '/doctrine.php' => config_path('doctrine.php'),
                 $path . '/dependencies.php' => config_path('dependencies.php'),
             ],
             'config');
@@ -57,9 +55,6 @@ class ProophServiceProvider extends ServiceProvider
             $path . '/prooph.php', 'prooph'
         );
         $this->mergeConfigFrom(
-            $path . '/doctrine.php', 'doctrine'
-        );
-        $this->mergeConfigFrom(
             $path . '/dependencies.php', 'dependencies'
         );
 
@@ -76,8 +71,8 @@ class ProophServiceProvider extends ServiceProvider
             });
         }
 
-        $this->app->singleton('doctrine.connection.default', function () {
-            return DriverManager::getConnection(config('doctrine')['connection']['default']);
+        $this->app->singleton('laravel.connections.pdo', function ($app) {
+            return $app['database']->connection()->getPdo();
         });
     }
 
@@ -96,9 +91,7 @@ class ProophServiceProvider extends ServiceProvider
             \Prooph\EventStoreBusBridge\EventPublisher::class,
             // event store
             \Prooph\EventStore\EventStore::class,
-            \Prooph\EventStore\Snapshot\SnapshotStore::class,
-            \Prooph\EventStore\Adapter\Doctrine\DoctrineEventStoreAdapter::class,
-            \Prooph\EventStore\Snapshot\Adapter\Doctrine\DoctrineSnapshotAdapter::class,
+            \Prooph\EventStore\Pdo\MySqlEventStore::class,
         ];
     }
 }

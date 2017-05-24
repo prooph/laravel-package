@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace Prooph\Package\Container;
 
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Factory for instantiating classes with no dependencies

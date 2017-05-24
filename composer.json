@@ -31,19 +31,17 @@
     "integration"
   ],
   "require": {
-    "php": "^5.5 || ^7.0",
-    "container-interop/container-interop": "^1.1",
-    "doctrine/dbal": "^2.0",
+    "php": "^7.1",
+    "psr/container": "^1.0",
     "illuminate/support": "^5.0",
     "illuminate/contracts": "^5.0",
-    "prooph/event-sourcing": "^4.0",
-    "prooph/event-store": "^6.0",
-    "prooph/event-store-bus-bridge": "^2.0",
-    "prooph/event-store-doctrine-adapter" : "^3.0",
-    "prooph/service-bus": "^5.0.2",
-    "prooph/snapshot-doctrine-adapter": "^1.0",
-    "prooph/snapshotter": "^1.0",
-    "sandrokeil/interop-config": "^1.0"
+    "prooph/event-sourcing": "^5.0",
+    "prooph/event-store": "^7.0",
+    "prooph/event-store-bus-bridge": "^3.0",
+    "prooph/pdo-event-store" : "^1.0",
+    "prooph/service-bus": "^6.0",
+    "prooph/pdo-snapshot-store": "^1.1",
+    "sandrokeil/interop-config": "^2.0"
   },
   "require-dev": {
     "laravel/framework": "^5.0",
@@ -57,7 +55,7 @@
     "proophsoftware/prooph-cli": "For Rapid Prototyping, if you want to generate your aggregates, commands, handlers and events."
   },
   "conflict": {
-    "sandrokeil/interop-config": "<1.0"
+    "sandrokeil/interop-config": "<2.0.1"
   },
   "autoload": {
     "psr-4": {
