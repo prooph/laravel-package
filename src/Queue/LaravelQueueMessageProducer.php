@@ -18,17 +18,15 @@ use React\Promise\Deferred;
 
 final class LaravelQueueMessageProducer implements MessageProducer
 {
-    
     public function __invoke(Message $message, Deferred $deferred = null): void
     {
-        
+
         // As far as I know - Laravel won't let me to get a promise, so no deferred queries are allowed
         if ($deferred) {
             throw new RuntimeException(__CLASS__ . ' cannot handle query messages which require future responses.');
         }
-        
+
         // Now dispatch the Laravel job to deal with the queue
         dispatch(new HandleMessageJob($message));
     }
-    
 }

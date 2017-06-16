@@ -12,9 +12,9 @@ declare(strict_types=1);
 namespace Prooph\Package\Queue;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Prooph\Common\Messaging\Message;
 use Prooph\Package\Facades\CommandBus;
 use Prooph\Package\Facades\EventBus;
@@ -23,10 +23,10 @@ use Prooph\Package\Facades\QueryBus;
 class HandleMessageJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable;
-    
+
     /** @var Message */
     private $message; // this variable (and the whole object) will serialized before storing in the queue
-    
+
     /**
      * AsyncMessageHandler constructor.
      *
@@ -36,7 +36,7 @@ class HandleMessageJob implements ShouldQueue
     {
         $this->message = $message;
     }
-    
+
     /**
      * Execute the job.
      *
@@ -60,6 +60,4 @@ class HandleMessageJob implements ShouldQueue
                 break;
         }
     }
-    
-    
 }
