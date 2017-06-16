@@ -70,7 +70,7 @@ final class LaravelContainer implements ContainerInterface
         return $this->cacheForHas[$id];
     }
 
-    private function cacheHas(string $id, bool $has): bool
+    private function cacheHas(string $id, bool $has)
     {
         $this->cacheForHas[$id] = $has;
     }
