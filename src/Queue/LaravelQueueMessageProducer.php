@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Prooph\Package\Job;
+namespace Prooph\Package\Queue;
 
 use Prooph\Common\Messaging\Message;
 use Prooph\ServiceBus\Async\MessageProducer;

@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace Prooph\Package\Job;
+namespace Prooph\Package\Queue;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -18,6 +18,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Prooph\Common\Messaging\DomainMessage;
 use Prooph\Common\Messaging\Message;
 use Prooph\Common\Messaging\MessageDataAssertion;
+use Prooph\Package\Facades\CommandBus;
+use Prooph\Package\Facades\EventBus;
+use Prooph\Package\Facades\QueryBus;
 
 class HandleMessageJob implements ShouldQueue
 {
@@ -48,13 +51,13 @@ class HandleMessageJob implements ShouldQueue
         // pass the message to the Message Bus
         switch ($this->message->messageType()) {
             case Message::TYPE_COMMAND:
-                \CommandBus::dispatch($this->message);
+                CommandBus::dispatch($this->message);
                 break;
             case Message::TYPE_QUERY:
-                \QueryBus::dispatch($this->message);
+                QueryBus::dispatch($this->message);
                 break;
             case Message::TYPE_EVENT:
-                \EventBus::dispatch($this->message);
+                EventBus::dispatch($this->message);
                 break;
         }
     }
@@ -108,9 +111,11 @@ class HandleMessageJob implements ShouldQueue
      *
      * @return void
      */
-    function __sleep()
+    function __sleep(): array
     {
-        $this->message = $this->serializeMessage($this->message);
+        return [
+            'message' => $this->serializeMessage($this->message),
+        ];
     }
     
     /**
