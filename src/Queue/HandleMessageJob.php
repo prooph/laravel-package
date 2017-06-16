@@ -15,9 +15,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Prooph\Common\Messaging\DomainMessage;
 use Prooph\Common\Messaging\Message;
-use Prooph\Common\Messaging\MessageDataAssertion;
 use Prooph\Package\Facades\CommandBus;
 use Prooph\Package\Facades\EventBus;
 use Prooph\Package\Facades\QueryBus;
@@ -26,8 +24,8 @@ class HandleMessageJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable;
     
-    /** @var Message|string */
-    private $message;
+    /** @var Message */
+    private $message; // this variable (and the whole object) will serialized before storing in the queue
     
     /**
      * AsyncMessageHandler constructor.
@@ -36,8 +34,6 @@ class HandleMessageJob implements ShouldQueue
      */
     public function __construct(Message $message)
     {
-        // Queries cannot be handled in async way, are they?
-        
         $this->message = $message;
     }
     
@@ -48,7 +44,10 @@ class HandleMessageJob implements ShouldQueue
      */
     public function handle()
     {
+        // This code will be executed after pulling this class from the queue and deserialization
+        //
         // pass the message to the Message Bus
+        //
         switch ($this->message->messageType()) {
             case Message::TYPE_COMMAND:
                 CommandBus::dispatch($this->message);
@@ -60,72 +59,6 @@ class HandleMessageJob implements ShouldQueue
                 EventBus::dispatch($this->message);
                 break;
         }
-    }
-    
-    
-    /**
-     * Serialize Prooph message in order to persist it in the queue with no data corruption
-     *
-     *
-     * @param Message $message
-     *
-     * @return string
-     */
-    public function serializeMessage(DomainMessage $message): string
-    {
-        $message_data = $message->toArray();
-        MessageDataAssertion::assert($message_data);
-        
-        // replace DateTimeImmutable object with string representation
-        $message_data['created_at'] = $message->createdAt()->format('Y-m-d\TH:i:s.u');
-        
-        return json_encode($message_data);
-    }
-    
-    
-    /**
-     * Unserialize string and convert it to original Prooph message
-     *
-     *
-     * @param string $serialized_message
-     *
-     * @return DomainMessage
-     */
-    private function unserializeMessage(string $serialized_message): DomainMessage
-    {
-        $message_data = json_decode($serialized_message, true);
-        
-        $message_data['created_at'] = \DateTimeImmutable::createFromFormat(
-            'Y-m-d\TH:i:s.u',
-            $message_data['created_at'],
-            new \DateTimeZone('UTC')
-        );
-        
-        return DomainMessage::fromArray($message_data);
-    }
-    
-    /**
-     * __sleep called when object goes to the queue
-     * Ref: Illuminate/Queue/Queue@createObjectPayload()
-     *
-     *
-     * @return void
-     */
-    function __sleep(): array
-    {
-        return [
-            'message' => $this->serializeMessage($this->message),
-        ];
-    }
-    
-    /**
-     * __wakeup called when job being pulled from the queue
-     *
-     * @return void
-     */
-    function __wakeup()
-    {
-        $this->message = $this->unserializeMessage($this->message);
     }
     
     
