@@ -19,23 +19,22 @@ use Prooph\Common\Messaging\DomainMessage;
 use Prooph\Common\Messaging\Message;
 use Prooph\Common\Messaging\MessageDataAssertion;
 
-class AsyncMessageHandler implements ShouldQueue
+class HandleMessageJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable;
     
-    // Queue name (we can change priority for this queue by the name)
-    public $queue = 'prooph-queue';
-    
-    /** @var DomainMessage|string */
+    /** @var Message|string */
     private $message;
     
     /**
      * AsyncMessageHandler constructor.
      *
-     * @param DomainMessage $message
+     * @param Message $message
      */
-    public function __construct(DomainMessage $message)
+    public function __construct(Message $message)
     {
+        // Queries cannot be handled in async way, are they?
+        
         $this->message = $message;
     }
     
@@ -47,7 +46,17 @@ class AsyncMessageHandler implements ShouldQueue
     public function handle()
     {
         // pass the message to the Message Bus
-        
+        switch ($this->message->messageType()) {
+            case Message::TYPE_COMMAND:
+                \CommandBus::dispatch($this->message);
+                break;
+            case Message::TYPE_QUERY:
+                \QueryBus::dispatch($this->message);
+                break;
+            case Message::TYPE_EVENT:
+                \EventBus::dispatch($this->message);
+                break;
+        }
     }
     
     
