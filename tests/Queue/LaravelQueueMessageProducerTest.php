@@ -19,7 +19,6 @@ use Prooph\ServiceBus\Async\AsyncMessage;
 use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\Exception\RuntimeException;
 use React\Promise\Deferred;
-use React\Promise\Promise;
 
 class AsyncCommandSample extends Command implements AsyncMessage
 {
@@ -39,7 +38,7 @@ class LaravelQueueMessageProducerTest extends \PHPUnit_Framework_TestCase
         Facade::setFacadeApplication($app);
         
         $command  = new AsyncCommandSample(['name' => 'Joe']);
-        $producer = new \Prooph\Package\Queue\LaravelQueueMessageProducer();
+        $producer = new \Prooph\Package\Queue\LaravelQueueMessageProducer($app['Illuminate\Contracts\Bus\Dispatcher']);
         
         $stub->dispatch($command)->shouldBeCalled();
         $producer->__invoke($command);
@@ -47,13 +46,16 @@ class LaravelQueueMessageProducerTest extends \PHPUnit_Framework_TestCase
     
     public function test_producer_will_throw_exception_if_deferred()
     {
+        $app = new Application();
+        $app->bind('Illuminate\Contracts\Bus\Dispatcher', 'Illuminate\Bus\Dispatcher');
+        
         $this->expectException(RuntimeException::class);
         
-        $command = new AsyncCommandSample(['name' => 'Joe']);
-        $promise = new Deferred();
+        $command  = new AsyncCommandSample(['name' => 'Joe']);
+        $deferred = new Deferred();
         
-        $producer = new \Prooph\Package\Queue\LaravelQueueMessageProducer();
-        $producer->__invoke($command, $promise);
+        $producer = new \Prooph\Package\Queue\LaravelQueueMessageProducer($app['Illuminate\Contracts\Bus\Dispatcher']);
+        $producer->__invoke($command, $deferred);
         
     }
 }
