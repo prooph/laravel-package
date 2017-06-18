@@ -21,7 +21,7 @@ final class LaravelQueueMessageProducer implements MessageProducer
 {
     /** @var  Dispatcher */
     private $laravel_queue_dispatcher;
-    
+
     /**
      * LaravelQueueMessageProducer constructor.
      *
@@ -31,16 +31,15 @@ final class LaravelQueueMessageProducer implements MessageProducer
     {
         $this->laravel_queue_dispatcher = $laravel_queue_dispatcher;
     }
-    
-    
+
     public function __invoke(Message $message, Deferred $deferred = null): void
     {
-        
+
         // As far as I know - Laravel won't let me to get a promise, so no deferred queries are allowed
         if ($deferred) {
             throw new RuntimeException(__CLASS__ . ' cannot handle query messages which require future responses.');
         }
-        
+
         // Now dispatch the Laravel job to deal with the queue
         $this->laravel_queue_dispatcher->dispatch(new HandleMessageJob($message));
     }

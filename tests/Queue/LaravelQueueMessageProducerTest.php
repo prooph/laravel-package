@@ -29,33 +29,32 @@ class LaravelQueueMessageProducerTest extends \PHPUnit_Framework_TestCase
 {
     public function test_producer_will_dispatch_async_command_through_async_job()
     {
-        $app                    = new Application();
-        $stub                   = static::prophesize(CommandBus::class);
+        $app = new Application();
+        $stub = static::prophesize(CommandBus::class);
         $app[CommandBus::class] = $stub->reveal();
         $app->bind('Illuminate\Contracts\Bus\Dispatcher', 'Illuminate\Bus\Dispatcher');
-        
+
         Facade::clearResolvedInstances();
         Facade::setFacadeApplication($app);
-        
-        $command  = new AsyncCommandSample(['name' => 'Joe']);
+
+        $command = new AsyncCommandSample(['name' => 'Joe']);
         $producer = new \Prooph\Package\Queue\LaravelQueueMessageProducer($app['Illuminate\Contracts\Bus\Dispatcher']);
-        
+
         $stub->dispatch($command)->shouldBeCalled();
         $producer->__invoke($command);
     }
-    
+
     public function test_producer_will_throw_exception_if_deferred()
     {
         $app = new Application();
         $app->bind('Illuminate\Contracts\Bus\Dispatcher', 'Illuminate\Bus\Dispatcher');
-        
+
         $this->expectException(RuntimeException::class);
-        
-        $command  = new AsyncCommandSample(['name' => 'Joe']);
+
+        $command = new AsyncCommandSample(['name' => 'Joe']);
         $deferred = new Deferred();
-        
+
         $producer = new \Prooph\Package\Queue\LaravelQueueMessageProducer($app['Illuminate\Contracts\Bus\Dispatcher']);
         $producer->__invoke($command, $deferred);
-        
     }
 }
