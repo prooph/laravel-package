@@ -2,7 +2,7 @@
 
 ## Overview
 This is a Laravel package for *prooph components* to get started out of the box with message bus, CQRS, event sourcing 
-and snapshots. It uses Doctrine DBAL with PDO MySQL driver. There are more adapters available.
+and snapshots. It uses the `prooph/pdo-event-store` event store however there are more adapters available.
 
 It provides all [service definitions and a default configuration](config "Laravel Package Resources"). This is more like 
 a Quick-Start package. If you want to use the prooph components in production, we recommend to configure the 
@@ -15,22 +15,29 @@ For rapid prototyping we recommend to use our
 ### Available services
 * `Prooph\ServiceBus\CommandBus`: Dispatches commands
 * `Prooph\ServiceBus\EventBus`: Dispatches events
+* `Prooph\ServiceBus\QueryBus`: Allows for querying over a message bus.
 * `Prooph\EventStoreBusBridge\TransactionManager`: Transaction manager for service bus and event store
 * `Prooph\EventStoreBusBridge\EventPublisher`: Publishes events on the event bus
-* `Prooph\EventStore\Adapter\Doctrine\DoctrineEventStoreAdapter`: Doctrine adapter for event store
-* `Prooph\EventStore\Snapshot\SnapshotStore`: Event store snapshot adapter
-* `Prooph\EventStore\Snapshot\Adapter\Doctrine\DoctrineSnapshotAdapter`: Doctrine snapshot adapter
+
+### Available event stores
+* `Prooph\EventStore\Pdo\MariaDbEventStore`: MariaDB event store adapter
+* `Prooph\EventStore\Pdo\MySqlEventStore`: MySQL event store adapter
+* `Prooph\EventStore\Pdo\PostgresEventStore`: PostgreSQL event store adapter
+
+### Available facades
+* `CommandBus`: Usage: https://github.com/prooph/laravel-package/blob/master/examples/command_bus.php
+* `EventBus`: Usage: https://github.com/prooph/laravel-package/blob/master/examples/event_bus.php
+* `QueryBus`: Usage: https://github.com/prooph/laravel-package/blob/master/examples/query_bus.php
+
 
 ## Installation
 You can install `prooph/laravel-package` via Composer by adding `"prooph/laravel-package": "^0.1"` 
 as requirement to your composer.json. 
 
 ### Service Provider
-In your application configuration add `Monii\Interop\Container\Laravel\ServiceProvider` for 
-[container-interop](https://github.com/container-interop/container-interop "Visit Container Interoperability Project") 
-support and `Prooph\Package\ProophServiceProvider` to your 
+In your application configuration add `Prooph\Package\ProophServiceProvider` to your 
 [providers](https://laravel.com/docs/master/providers#registering-providers "Visit Laravel Documentation") array. 
-Then you have access to the services above.
+Then you will have access to the services above.
 
 This package has configuration files which can be configured to your needs.
 
