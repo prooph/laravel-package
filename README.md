@@ -31,7 +31,7 @@ For rapid prototyping we recommend to use our
 
 
 ## Installation
-You can install `prooph/laravel-package` via Composer by adding `"prooph/laravel-package": "^0.1"` 
+You can install `prooph/laravel-package` via Composer by adding `"prooph/laravel-package": "^0.4"` 
 as requirement to your composer.json. 
 
 ### Service Provider
