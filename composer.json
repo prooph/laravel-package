@@ -78,5 +78,17 @@
         "cs-fix": "php-cs-fixer fix -v --diff",
         "test": "phpunit",
         "test-coverage": "phpunit --coverage-clover clover.xml"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Prooph\\Package\\ProophServiceProvider"
+            ],
+            "aliases": {
+                "CommandBus": "Prooph\\Package\\Facades\\CommandBus",
+                "EventBus": "Prooph\\Package\\Facades\\EventBus",
+                "QueryBus": "Prooph\\Package\\Facades\\QueryBus"
+            }
+        }
     }
 }

@@ -35,7 +35,8 @@ You can install `prooph/laravel-package` via Composer by adding `"prooph/laravel
 as requirement to your composer.json. 
 
 ### Service Provider
-In your application configuration add `Prooph\Package\ProophServiceProvider` to your 
+
+If you are using Laravel 5.5 or higher the package will automatically register itself. Otherwise you need to add `Prooph\Package\ProophServiceProvider` to your 
 [providers](https://laravel.com/docs/master/providers#registering-providers "Visit Laravel Documentation") array. 
 Then you will have access to the services above.
 
