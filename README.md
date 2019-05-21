@@ -49,74 +49,8 @@ $ php artisan vendor:publish
 ```
 
 ### Database
-Setup your [database migrations](https://github.com/prooph/event-store-doctrine-adapter#database-set-up)
-for the Event Store and Snapshot with:
-
-```bash
-$ php artisan make:migration create_event_stream_table
-```
-
-Update the class `CreateEventStreamTable`:
-
-```php
-class CreateEventStreamTable extends Migration
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        \Prooph\Package\Migration\Schema\EventStoreSchema::createSingleStream('event_stream', true);
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        \Prooph\Package\Migration\Schema\EventStoreSchema::dropStream('event_stream');
-    }
-}
-```
-
-And now for the snapshot table.
-
-```bash
-$ php artisan make:migration create_snapshot_table
-```
-
-Update the class `CreateSnapshotTable`:
-
-```php
-class CreateSnapshotTable extends Migration
-{
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        \Prooph\Package\Migration\Schema\SnapshotSchema::create('snapshot');
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        \Prooph\Package\Migration\Schema\SnapshotSchema::drop('snapshot');
-    }
-}
-```
-
-Now it's time to execute the migrations:
+The Database migrations were published already according to [database migrations](https://github.com/prooph/event-store-doctrine-adapter#database-set-up)
+so now it's time to execute the migrations:
 
 ```bash
 $ php artisan migrate
