@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 namespace Prooph\Package;
 
-use Illuminate\Support\ServiceProvider;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
+use Illuminate\Support\ServiceProvider;
 use Prooph\Package\Container\LaravelContainer;
 
 /**
@@ -24,6 +24,7 @@ final class ProophServiceProvider extends ServiceProvider
     /**
      * Perform post-registration booting of services.
      *
+     * @param Filesystem $filesystem
      * @return void
      */
     public function boot(Filesystem $filesystem)
@@ -109,13 +110,14 @@ final class ProophServiceProvider extends ServiceProvider
      * Returns existing migration file if found, else uses the current timestamp.
      *
      * @param Filesystem $filesystem
+     * @param string $filename
      * @return string
      */
     protected function getMigrationFileName(Filesystem $filesystem, string $filename): string
     {
         $timestamp = date('Y_m_d_His');
 
-        return Collection::make($this->app->databasePath().DIRECTORY_SEPARATOR.'migrations'.DIRECTORY_SEPARATOR)
+        return Collection::make($this->app->databasePath().'/migrations/')
             ->flatMap(function ($path) use ($filesystem, $filename) {
                 return $filesystem->glob($path.'*_'.$filename);
             })->push($this->app->databasePath()."/migrations/{$timestamp}_".$filename)
