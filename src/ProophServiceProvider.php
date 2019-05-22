@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Prooph\Package;
 
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 use Prooph\Package\Container\LaravelContainer;
 
@@ -22,9 +24,10 @@ final class ProophServiceProvider extends ServiceProvider
     /**
      * Perform post-registration booting of services.
      *
+     * @param Filesystem $filesystem
      * @return void
      */
-    public function boot()
+    public function boot(Filesystem $filesystem)
     {
         $path = $this->getConfigPath();
 
@@ -34,6 +37,14 @@ final class ProophServiceProvider extends ServiceProvider
                 $path . '/dependencies.php' => config_path('dependencies.php'),
             ],
             'config');
+
+        $this->publishes([
+            __DIR__.'/../database/migrations/create_event_stream_table.php.stub' => $this->getMigrationFileName($filesystem, 'create_event_stream_table.php'),
+        ], 'migrations');
+
+        $this->publishes([
+            __DIR__.'/../database/migrations/create_snapshot_table.php.stub' => $this->getMigrationFileName($filesystem, 'create_snapshot_table.php'),
+        ], 'migrations');
     }
 
     /**
@@ -93,5 +104,23 @@ final class ProophServiceProvider extends ServiceProvider
             \Prooph\EventStore\EventStore::class,
             \Prooph\EventStore\Pdo\MySqlEventStore::class,
         ];
+    }
+
+    /**
+     * Returns existing migration file if found, else uses the current timestamp.
+     *
+     * @param Filesystem $filesystem
+     * @param string $filename
+     * @return string
+     */
+    protected function getMigrationFileName(Filesystem $filesystem, string $filename): string
+    {
+        $timestamp = date('Y_m_d_His');
+
+        return Collection::make($this->app->databasePath().'/migrations/')
+            ->flatMap(function ($path) use ($filesystem, $filename) {
+                return $filesystem->glob($path.'*_'.$filename);
+            })->push($this->app->databasePath()."/migrations/{$timestamp}_".$filename)
+            ->first();
     }
 }
